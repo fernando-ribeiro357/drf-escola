@@ -10,8 +10,9 @@ from django_filters.rest_framework import DjangoFilterBackend
 class EstudanteViewSet(viewsets.ModelViewSet):
     queryset = Estudante.objects.all()
     serializer_class = EstudanteSerializer
-    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
     ordering_fields = ['nome']
+    search_fields = ['nome','cpf','email']
 
 class CursoViewSet(viewsets.ModelViewSet):
     queryset = Curso.objects.all()
