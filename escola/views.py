@@ -3,8 +3,8 @@ from escola.serializers import (EstudanteSerializer,
                                 EstudanteSerializerV2,
                                 CursoSerializer, 
                                 MatriculaSerializer, 
-                                ListaMatriculasEstudanteSerializar, 
-                                ListaMatriculasCursoSerializar)
+                                ListaMatriculasEstudanteSerializer, 
+                                ListaMatriculasCursoSerializer)
 from rest_framework import viewsets, generics, filters
 from rest_framework.throttling import UserRateThrottle
 from escola.throttles import MatriculaAnonRateThrottle
@@ -31,15 +31,16 @@ class MatriculaViewSet(viewsets.ModelViewSet):
     queryset = Matricula.objects.all().order_by("id")
     serializer_class = MatriculaSerializer
     throttle_classes = [UserRateThrottle, MatriculaAnonRateThrottle]
+    http_method_names = ["get","post"]
     
-class ListaMatriculasEstudate(generics.ListAPIView):
+class ListaMatriculasEstudante(generics.ListAPIView):
     def get_queryset(self):
         queryset = Matricula.objects.filter(estudante_id=self.kwargs['pk']).order_by("id")
         return queryset
-    serializer_class = ListaMatriculasEstudanteSerializar
+    serializer_class = ListaMatriculasEstudanteSerializer
 
 class ListaMatriculasCurso(generics.ListAPIView):
     def get_queryset(self):
         queryset = Matricula.objects.filter(curso_id=self.kwargs['pk']).order_by("id")
         return queryset
-    serializer_class = ListaMatriculasCursoSerializar
+    serializer_class = ListaMatriculasCursoSerializer
