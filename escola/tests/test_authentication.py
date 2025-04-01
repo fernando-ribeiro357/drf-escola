@@ -24,8 +24,13 @@ class AuthenticationUserTestCase(APITestCase):
         usuario = authenticate(username='admin',password='errado')
         self.assertFalse((usuario is not None) and (usuario.is_authenticated))
     
-    def test_get_request(self):
-        """Teste que verifica uma requisição GET autorizada"""        
+    def test_get_request_autorizada(self):
+        """Teste que verifica uma requisição GET autorizada"""
         self.client.force_authenticate(self.usuario)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+    
+    def test_get_request_nao_autorizada(self):
+        """Teste que verifica uma requisição GET não autorizada"""        
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
