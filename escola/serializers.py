@@ -15,8 +15,6 @@ class EstudanteSerializer(serializers.ModelSerializer):
         if celular_invalido(dados['celular']):
             raise serializers.ValidationError({'celular':'Digite um número de celularválido (ex.: 21 99999-8888).'})
         return dados
-    
-    
 
 class CursoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -38,8 +36,7 @@ class ListaMatriculasEstudanteSerializer(serializers.ModelSerializer):
         return obj.get_periodo_display()
 
 class ListaMatriculasCursoSerializer(serializers.ModelSerializer):
-    estudante_nome = serializers.ReadOnlyField(source='estudante.nome')
-    
+    estudante_nome = serializers.ReadOnlyField(source='estudante.nome')    
     class Meta:
         model = Matricula
         fields = ['estudante_nome']
