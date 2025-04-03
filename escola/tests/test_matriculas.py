@@ -5,27 +5,14 @@ from rest_framework import status
 from escola.models import Estudante, Curso, Matricula
 
 class MatriculassTestCase(APITestCase):
-    def setUp(self):
-        self.usuario = User.objects.create_superuser(username='admin', password='admin')
+    fixtures = ['prototipo_database.json']
+    def setUp(self):        
+        self.usuario = User.objects.get(username='fernando')
         self.url = reverse('Matriculas-list')
         self.client.force_authenticate(user=self.usuario)
-        self.estudante = Estudante.objects.create(
-            nome = 'Teste de Modelo',
-            email = 'testedemodelo@site.net',
-            cpf = '68195899056',
-            data_nascimento = '2000-03-03',
-            celular = '21 99999-9999'
-        )
-        self.curso = Curso.objects.create(
-            codigo = 'CTEST',
-            descricao = 'Descrição do Teste de Curso',
-            nivel = 'B'
-        )
-        self.matricula = Matricula.objects.create(
-            estudante = self.estudante,
-            curso = self.curso,
-            periodo = 'T'
-        )
+        self.estudante = Estudante.objects.get(pk=1)
+        self.curso = Curso.objects.get(pk=1)
+        self.matricula = Matricula.objects.get(pk=1)
     
     def test_get_matriculas(self):
         """Teste de requisição GET"""

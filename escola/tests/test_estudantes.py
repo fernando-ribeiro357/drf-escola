@@ -6,24 +6,13 @@ from escola.models import Estudante
 from escola.serializers import EstudanteSerializer
 
 class EstudantesTestCase(APITestCase):
+    fixtures = ['prototipo_database.json']
     def setUp(self):
-        self.usuario = User.objects.create_superuser(username='admin', password='admin')
+        self.usuario = User.objects.get(username='fernando')
         self.url = reverse('Estudantes-list')
         self.client.force_authenticate(user=self.usuario)
-        self.estudante01 = Estudante.objects.create(
-            nome = 'Estudante Um',
-            email = 'estudante01@site.net',
-            cpf = '76767058432',
-            data_nascimento = '2000-03-03',
-            celular = '21 99999-9999'
-        )
-        self.estudante02 = Estudante.objects.create(
-            nome = 'Estudante Dois',
-            email = 'estudante02@site.net',
-            cpf = '95923385902',
-            data_nascimento = '2000-03-03',
-            celular = '21 99999-9999'
-        )
+        self.estudante01 = Estudante.objects.get(pk=1)
+        self.estudante02 = Estudante.objects.get(pk=2)
     
     def test_get_estudantes(self):
         """Teste de requisição GET"""
@@ -52,7 +41,7 @@ class EstudantesTestCase(APITestCase):
 
     def test_delete_estudante(self):
         """Teste de requisição DELETE um estudante"""
-        response = self.client.delete(f'{self.url}2/')
+        response = self.client.delete(f'{self.url}45/')
         self.assertEqual(response.status_code,status.HTTP_204_NO_CONTENT)
 
     def test_put_estudante(self):

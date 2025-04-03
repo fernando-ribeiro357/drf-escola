@@ -6,20 +6,13 @@ from escola.models import Curso
 from escola.serializers import CursoSerializer
 
 class CursosTestCase(APITestCase):
-    def setUp(self):
-        self.usuario = User.objects.create_superuser(username='admin', password='admin')
+    fixtures = ['prototipo_database.json']
+    def setUp(self):        
+        self.usuario = User.objects.get(username='fernando')
         self.url = reverse('Cursos-list')
-        self.client.force_authenticate(user=self.usuario)        
-        self.curso01 = Curso.objects.create(
-            codigo = 'CTEST1',
-            descricao = 'Descrição do Curso 01',
-            nivel = 'B'
-        )
-        self.curso02 = Curso.objects.create(
-            codigo = 'CTEST2',
-            descricao = 'Descrição do Curso 02',
-            nivel = 'I'
-        )
+        self.client.force_authenticate(user=self.usuario)
+        self.curso01 = Curso.objects.get(pk=1)
+        self.curso02 = Curso.objects.get(pk=2)        
     
     def test_get_cursos(self):
         """Teste de requisição GET"""
@@ -46,7 +39,7 @@ class CursosTestCase(APITestCase):
     
     def test_delete_curso(self):
         """Teste de requisição DELETE um curso"""
-        response = self.client.delete(f'{self.url}2/')
+        response = self.client.delete(f'{self.url}3/')
         self.assertEqual(response.status_code,status.HTTP_204_NO_CONTENT)
 
     def test_put_curso(self):
@@ -56,5 +49,5 @@ class CursosTestCase(APITestCase):
             'descricao': 'Descrição do Curso 01 atualizado',
             'nivel': 'I'
         }
-        response = self.client.put(f'{self.url}1/',data=dados)
+        response = self.client.put(f'{self.url}4/',data=dados)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
